@@ -4,11 +4,14 @@ import com.practice.jwt.config.jwt.JwtAuthenticationFilter;
 import com.practice.jwt.filter.MyFilter1;
 import com.practice.jwt.filter.MyFilter3;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.filter.CorsFilter;
@@ -19,8 +22,13 @@ import javax.persistence.Basic;
 @EnableWebSecurity //이 config를 허용함
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     //CorsConfig안에 있는 CorsFilter메소드를 @Bean등록을 해서 바로 빼올수 있음
     private final CorsFilter corsFilter;
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
